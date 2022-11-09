@@ -21,14 +21,11 @@ export default class Camera {
             1000
         );
         this.scene.add(this.perspectiveCamera);
-        this.perspectiveCamera.position.set(29, 14, 12)
+        this.perspectiveCamera.position.set(0, 0, 25)
     }
     
     setOrbitControls() {
-        console.log(this.canvas, this.perspectiveCamera);
         this.controls = new OrbitControls(this.perspectiveCamera, this.canvas);
-        this.controls.enableDamping = true;
-        this.controls.enableZoom = false;
     }
 
     resize() { 

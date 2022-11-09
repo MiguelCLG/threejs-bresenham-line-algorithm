@@ -9,6 +9,3 @@ function TestLineAlgorithm() {
 
 CreateHeader();
 Init();
-// Animate();
-// SetupOrbitControls();
-// InitializeGrid();

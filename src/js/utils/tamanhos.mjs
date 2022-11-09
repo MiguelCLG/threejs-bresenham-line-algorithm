@@ -1,4 +1,4 @@
-import {EventEmitter} from 'https://unpkg.com/@dekkai/event-emitter';
+import { EventEmitter } from 'https://unpkg.com/@dekkai/event-emitter';
 /**
  * @class Tamanhos
  * Esta class vai armazenar todos os tamanhos que percisamos para a nossa aplicação.
@@ -14,8 +14,6 @@ export default class Tamanhos extends EventEmitter {
         this.aspect = this.width / this.height;
         this.pixelRatio = Math.min(window.devicePixelRatio, 2);
         this.frustrum = 5;
-
-        console.log(this.aspect)
 
         window.addEventListener("resize", () => {
             this.width = window.innerWidth;

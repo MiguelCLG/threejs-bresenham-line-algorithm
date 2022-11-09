@@ -1,6 +1,9 @@
 import * as THREE from 'https://unpkg.com/three@0.124.0/build/three.module.js';
+import Mouse from '../utils/mouse.mjs';
 import Tamanhos from '../utils/tamanhos.mjs';
+import Tempo from '../utils/tempo.mjs';
 import Camera from './camera.mjs';
+import Grid from './grid.mjs';
 import Renderer from './renderer.mjs';
 /**
  * @class Singleton
@@ -18,13 +21,17 @@ export default class Singleton {
             return Singleton.instance;
         }
         Singleton.instance = this;
-        console.log(canvas);
-
         this.canvas = canvas;
         this.scene = new THREE.Scene();
+        this.tempo = new Tempo();
         this.tamanhos = new Tamanhos();
         this.camera = new Camera();
         this.renderer = new Renderer();
+        this.grid = new Grid();
+        // this.mouse = new Mouse();
+
+        this.tamanhos.on("resize", () => this.resize());
+        this.tempo.on("update", () => this.update());
     }
 
     /**
@@ -33,6 +40,7 @@ export default class Singleton {
     resize() {
         this.camera.resize();
         this.renderer.resize();
+        this.grid.resize();
     }
     
     /**
@@ -43,6 +51,8 @@ export default class Singleton {
     update() {
         this.camera.update();
         this.renderer.update();
+        this.grid.update();
+        // this.mouse.update();
     }
 
 }
