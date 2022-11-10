@@ -1,4 +1,5 @@
 import * as THREE from "https://unpkg.com/three@0.124.0/build/three.module.js";
+import Keyboard from "../utils/keyboard.mjs";
 import Mouse from "../utils/mouse.mjs";
 import Tamanhos from "../utils/tamanhos.mjs";
 import Tempo from "../utils/tempo.mjs";
@@ -28,6 +29,7 @@ export default class Singleton {
     this.renderer = new Renderer();
     this.grid = new Grid();
     this.mouse = new Mouse();
+    this.keyboard = new Keyboard();
 
     this.tamanhos.on("resize", () => this.resize());
     this.tempo.on("update", () => this.update());
