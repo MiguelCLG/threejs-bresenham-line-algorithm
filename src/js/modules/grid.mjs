@@ -10,13 +10,14 @@ class GridTile {
     this.tile = this.createTile(
       this.position.x,
       this.position.y,
+      this.position.z,
       this.size,
       this.color
     );
   }
 
-  createTile(x, y, tileSize, cor) {
-    let tileGeometry = new THREE.BoxGeometry(tileSize, tileSize, 0);
+  createTile(x, y, z, tileSize, cor, zSize = 0) {
+    let tileGeometry = new THREE.BoxGeometry(tileSize, tileSize, zSize);
     let tileMaterial = new THREE.MeshBasicMaterial({
       color: cor,
       side: THREE.DoubleSide,
@@ -25,7 +26,7 @@ class GridTile {
     let tile = new THREE.Mesh(tileGeometry, tileMaterial);
     tile.position.x = x;
     tile.position.y = y;
-    tile.position.z = 0;
+    tile.position.z = z;
     return tile;
   }
 
@@ -34,6 +35,48 @@ class GridTile {
     this.tile = this.createTile(
       this.position.x,
       this.position.y,
+      this.position.z,
+      this.size,
+      this.color
+    );
+  }
+}
+
+class RasterTile {
+  constructor(size, position, color) {
+    this.size = size;
+    this.position = position;
+    this.color = color;
+    this.tile = this.createTile(
+      this.position.x,
+      this.position.y,
+      this.position.z,
+      this.size,
+      this.color
+    );
+  }
+
+  createTile(x, y, z, tileSize, cor, zSize = 0.1) {
+    let tileGeometry = new THREE.BoxGeometry(tileSize, tileSize, zSize);
+    let tileMaterial = new THREE.MeshBasicMaterial({
+      color: cor,
+    });
+    tileMaterial.opacity = 0.7;
+    tileMaterial.transparent = true;
+
+    let tile = new THREE.Mesh(tileGeometry, tileMaterial);
+    tile.position.x = x;
+    tile.position.y = y;
+    tile.position.z = z;
+    return tile;
+  }
+
+  setTileColor(color) {
+    this.color = color;
+    this.tile = this.createTile(
+      this.position.x,
+      this.position.y,
+      this.position.z,
       this.size,
       this.color
     );
@@ -59,15 +102,20 @@ export default class Grid {
       for (let y = -size; y <= size; y++) {
         // queremos cores diferentes para cada bloco alternado, então verificamos os pares e construímos o tile de acordo com o resultado
         if ((x % 2 === 0 && y % 2 === 0) || (x % 2 !== 0 && y % 2 !== 0))
-          tiles.push(new GridTile(1, { x, y }, cor1));
-        else tiles.push(new GridTile(1, { x, y }, cor2));
+          tiles.push(new GridTile(1, { x, y, z: 0 }, cor1));
+        else tiles.push(new GridTile(1, { x, y, z: 0 }, cor2));
       }
     }
     return tiles;
   }
 
   createRasterTile(point) {
-    return new GridTile(1, point, this.rasterTileColor);
+    return new RasterTile(
+      1,
+      { x: point.x, y: point.y, z: 0.1 },
+      this.rasterTileColor,
+      0.1
+    );
   }
 
   getTile(position) {
@@ -113,7 +161,9 @@ export default class Grid {
 
   drawRaster(linePointVector) {
     linePointVector.forEach((point) => {
-      this.createRasterTile(point);
+      const pixelToRender = this.createRasterTile(point);
+
+      this.scene.add(pixelToRender.tile);
     });
   }
 

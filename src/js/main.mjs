@@ -12,3 +12,4 @@ function TestLineAlgorithm() {
 Init();
 
 //TODO: REMOVE JSHINT IGNORES
+//TODO: Fix algorithm to all quadrants
