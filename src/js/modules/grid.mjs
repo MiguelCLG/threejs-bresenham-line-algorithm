@@ -56,8 +56,8 @@ class RasterTile {
     );
   }
 
-  createTile(x, y, z, tileSize, cor, zSize = 0.1) {
-    let tileGeometry = new THREE.BoxGeometry(tileSize, tileSize, zSize);
+  createTile(x, y, z, tileSize, cor) {
+    let tileGeometry = new THREE.BoxGeometry(tileSize, tileSize, tileSize / 4);
     let tileMaterial = new THREE.MeshBasicMaterial({
       color: cor,
     });
@@ -112,9 +112,8 @@ export default class Grid {
   createRasterTile(point) {
     return new RasterTile(
       1,
-      { x: point.x, y: point.y, z: 0.1 },
-      this.rasterTileColor,
-      0.1
+      { x: point.x, y: point.y, z: 0.25 },
+      this.rasterTileColor
     );
   }
 
@@ -146,12 +145,12 @@ export default class Grid {
         new THREE.Vector3(
           this.selectedTiles[0].position.x,
           this.selectedTiles[0].position.y,
-          1
+          0.1
         ),
         new THREE.Vector3(
           this.selectedTiles[1].position.x,
           this.selectedTiles[1].position.y,
-          1
+          0.1
         )
       );
       console.log(linePointVector);
