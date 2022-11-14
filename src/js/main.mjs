@@ -1,5 +1,5 @@
 import { lineMP } from "/lineMP.mjs";
-import { Initialize as Init } from "./modules/init.mjs";
+import Initialize from "./modules/init.mjs";
 
 function TestLineAlgorithm() {
   let P = { x: 0, y: 0 };
@@ -9,7 +9,6 @@ function TestLineAlgorithm() {
 }
 
 // CreateHeader();
-Init();
+Initialize();
 
 //TODO: REMOVE JSHINT IGNORES
-//TODO: Fix algorithm to all quadrants

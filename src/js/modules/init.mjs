@@ -5,4 +5,4 @@ function Initialize() {
   const mainApp = new Singleton(canvas);
 }
 
-export { Initialize };
+export default Initialize;
