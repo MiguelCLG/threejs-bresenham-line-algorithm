@@ -29,7 +29,7 @@ export default class Singleton {
     this.tamanhos = new Tamanhos();
     this.camera = new Camera();
     this.renderer = new Renderer();
-    this.grid = new Grid();
+    this.grid = new Grid(10);
     this.mouse = new Mouse();
     this.keyboard = new Keyboard();
 

@@ -87,15 +87,22 @@ export default class Grid {
   tileColor1 = 0xef9a70; //jshint ignore:line
   tileColor2 = 0x9a92bf;
   rasterTileColor = 0xffff00;
-  size = 10;
 
-  constructor() {
+  constructor(size = 10) {
     this.singleton = new Singleton();
+    this.size = size;
     this.scene = this.singleton.scene;
     this.information = this.singleton.information;
     this.selectedTiles = [];
     this.rasterizedTiles = [];
     this.reset();
+
+    const botaoAlterar = document.getElementById('change-grid-btn');  
+    botaoAlterar.addEventListener('click', () => {
+      console.log(document.getElementById('size-input').value);
+      this.changeGridSize(document.getElementById('size-input').value)
+    }
+    );
   }
 
   createGrid(size, cor1, cor2) {
@@ -187,19 +194,27 @@ export default class Grid {
     this.scene.add(this.line);
   }
 
-  reset(rasterized = false) {
-    this.tiles = this.createGrid(this.size, this.tileColor1, this.tileColor2);
-    this.tiles.forEach(({ tile }) => {
-      this.scene.add(tile);
-    });
-
+  clean(rasterized) {
+    if(this.tiles)
+      this.tiles.forEach((tile) => this.scene.remove(tile.tile));
+    this.tiles = [];
     if(rasterized){
       this.rasterizedTiles.forEach((tile) => { this.scene.remove(tile) });
       this.rasterizedTiles = [];
     }
-    
     this.selectedTiles = [];
     this.scene.remove(this.line);
+  }
+  reset(rasterized = false) {
+    this.clean(rasterized);
+    this.tiles = this.createGrid(this.size, this.tileColor1, this.tileColor2);
+    this.tiles.forEach(({ tile }) => {
+      this.scene.add(tile);
+    });
+  }
+  changeGridSize(size) {
+    this.size = size;
+    this.reset(true);
   }
   resize() {}
   update() {}
