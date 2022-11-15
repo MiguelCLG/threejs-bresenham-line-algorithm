@@ -5,11 +5,12 @@ import Tamanhos from "../utils/tamanhos.mjs";
 import Tempo from "../utils/tempo.mjs";
 import Camera from "./camera.mjs";
 import Grid from "./grid.mjs";
+import Information from "./information.mjs";
 import Renderer from "./renderer.mjs";
 /**
  * @class Singleton
  * Cria uma instancia desta class, usando o padrão de singleton para que haja apenas
- * uma class principal que gestiona o resto das classes.
+ * uma class principal que gere o resto das classes.
  * @param canvas - canvas que vamos usar
  */
 export default class Singleton {
@@ -24,6 +25,7 @@ export default class Singleton {
     this.canvas = canvas;
     this.scene = new THREE.Scene();
     this.tempo = new Tempo();
+    this.information = new Information();
     this.tamanhos = new Tamanhos();
     this.camera = new Camera();
     this.renderer = new Renderer();
@@ -31,6 +33,10 @@ export default class Singleton {
     this.mouse = new Mouse();
     this.keyboard = new Keyboard();
 
+    this.axesHelper = new THREE.AxesHelper( 5 );
+    
+    this.scene.add(this.axesHelper);
+    
     this.tamanhos.on("resize", () => this.resize());
     this.tempo.on("update", () => this.update());
   }
@@ -54,5 +60,6 @@ export default class Singleton {
     this.renderer.update();
     this.grid.update();
     this.mouse.update();
+    this.information.update();
   }
 }

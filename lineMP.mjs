@@ -13,8 +13,8 @@ function lineMP(p, q) {
     /*              
   Octantes 1 - 8 
   Temos dois algoritmos que calculam a linha dependendo da octante que estamos a tentar calcular
-  calculaLinhaEixoX calcula as octantes 1, 4, 5 e 8
-  calculaLinhaEixoY calcula as octantes 2, 3, 6 e 7
+  calculoLinhaXMaior calcula as octantes 1, 4, 5 e 8
+  calculoLinhaYMaior calcula as octantes 2, 3, 6 e 7
   
                   ^
         \         |         /
@@ -42,20 +42,21 @@ function lineMP(p, q) {
   // distancia entre os pontos Y
   let dy = Math.abs(y1 - y0);
 
-  
+  /** 
+   * Se |dx| >= |dy|, então usamos o eixo dos x para a incrementação do ponto A (p) até ao ponto B (q)
+   * Caso contrário, usamos o eixo dos y para fazer o incremento.
+  */
   if (dy < dx)
   {
-      if(x0 > x1)
-          return calculoLinhaEixoX(q, p);
-      else
-          return calculoLinhaEixoX(p, q)
+    if(x0 > x1) // esta verificação é para fazer o cálculo a partir do ponto mais pequeno
+      return calculoLinhaXMaior(q, p);
+    return calculoLinhaXMaior(p, q)
   }
   else 
   {
-      if(y0 > y1)
-          return calculoLinhaEixoY(q, p);
-      else
-          return calculoLinhaEixoY(p, q)
+    if(y0 > y1) // o mesmo que acima 
+      return calculoLinhaYMaior(q, p);
+    return calculoLinhaYMaior(p, q)
   }
 }
 
@@ -63,7 +64,7 @@ function lineMP(p, q) {
  * Esta função é chamada quando o dx (distancia entre os dois pontos X) 
  * é maior ou igual a dy (distancia entre os dois pontos Y)
  */
-function calculoLinhaEixoX(pointA, pointB) {  
+function calculoLinhaXMaior(pointA, pointB) {  
   // array inicial para os pixeis a rasterizar
   let allPoints = [];
 
@@ -89,6 +90,10 @@ function calculoLinhaEixoX(pointA, pointB) {
 
   let point = 2 * dy - dx;
 
+  /** 
+  * Percorremos o eixo do X incrementando 1 a cada iteração
+  * porque dx > dy.
+  */
   while (x <= pointB.x) {
     // adiciona pixel
     allPoints.push({ x: x, y: y });
@@ -111,9 +116,12 @@ function calculoLinhaEixoX(pointA, pointB) {
   return allPoints;
 }
 
-function calculoLinhaEixoY(pointA, pointB) {
+/**
+ * Esta função é chamada quando o dy (distancia entre os dois pontos Y) 
+ * é maior que dx (distancia entre os dois pontos X)
+ */
+function calculoLinhaYMaior(pointA, pointB) {
   // x e y começam no ponto inicial e calculamos as suas distancias
-  
   let x = pointA.x;
   let y = pointA.y;
   let dx = pointB.x - pointA.x;
@@ -128,16 +136,27 @@ function calculoLinhaEixoY(pointA, pointB) {
   }
     
   let point = 2 * dx - dy;
+
+  /** 
+  * Percorremos o eixo do Y incrementando 1 a cada iteração
+  * porque dy > dx.
+  */
   while (y <= pointB.y) {
     // add pixel
     allPoints.push({ x, y });
     y++;
-      if (point <= 0) {
-        point = point + 2 * dx;
-      }
-      else {
-        point = point + 2 * (dx - dy);
-        x += directionX;
+
+    /** 
+    * Se o ponto for negativo ou neutro
+    * Então recalculamos o novo ponto em torno do eixo dos Y (incluindo a sua simetria)
+    * Senão incrementamos o X e calculamos os pontos correspondendo às octantes 2, 3, 6, 7
+    */
+    if (point <= 0) {
+      point = point + 2 * dx;
+    }
+    else {
+      point = point + 2 * (dx - dy);
+      x += directionX;
     }
   }
 

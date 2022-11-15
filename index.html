@@ -1,15 +1,19 @@
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="./src/css/style.css" media="screen" />
-        <title>E-folio A - Miguel Gonçalves 1901337</title>
-    </head>
-    <body>
-        <div class="canvas-wrapper">
-            <canvas class="main-canvas"></canvas>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="src/css/style.css  " />
+    <title>E-folio A - Miguel Gonçalves 1901337</title>
+    <script type="module" src="./src/js/main.mjs"></script>
+</head>
+
+<body>
+    <div class="canvas-wrapper">
+        <div id="information" class="info-text">
+            <p class="last-clicked-text"></p>
+            <p class="last-calculation-text"></p>
         </div>
-        <script type="module" src="./src/js/main.mjs" />
-    </body>
+        <canvas class="main-canvas"></canvas>
+    </div>
+</body>
 </html>

@@ -92,7 +92,9 @@ export default class Grid {
   constructor() {
     this.singleton = new Singleton();
     this.scene = this.singleton.scene;
+    this.information = this.singleton.information;
     this.selectedTiles = [];
+    this.rasterizedTiles = [];
     this.reset();
   }
 
@@ -153,15 +155,23 @@ export default class Grid {
           0.1
         )
       );
-      console.log(linePointVector);
       this.drawRaster(linePointVector);
+
+      let displayInfo = '';
+      linePointVector.forEach(({ x, y }, index) =>
+        displayInfo += `\n${index+1}: (${x}, ${y})` 
+      );
+    
+      this.information.updateData({
+            lastCalculation: displayInfo,
+        })
     }
   }
 
   drawRaster(linePointVector) {
     linePointVector.forEach((point) => {
       const pixelToRender = this.createRasterTile(point);
-
+      this.rasterizedTiles.push(pixelToRender.tile);
       this.scene.add(pixelToRender.tile);
     });
   }
@@ -177,11 +187,17 @@ export default class Grid {
     this.scene.add(this.line);
   }
 
-  reset() {
+  reset(rasterized = false) {
     this.tiles = this.createGrid(this.size, this.tileColor1, this.tileColor2);
     this.tiles.forEach(({ tile }) => {
       this.scene.add(tile);
     });
+
+    if(rasterized){
+      this.rasterizedTiles.forEach((tile) => { this.scene.remove(tile) });
+      this.rasterizedTiles = [];
+    }
+    
     this.selectedTiles = [];
     this.scene.remove(this.line);
   }

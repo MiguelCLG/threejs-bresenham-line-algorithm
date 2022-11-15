@@ -1,1 +1,12 @@
-body { margin: 0 };
+body { margin: 0 }
+
+#information {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 500px;
+    background-color: rgba(255, 255, 255, 0.2);
+    transition: 1s auto ease-in-out;
+    color: white;
+}

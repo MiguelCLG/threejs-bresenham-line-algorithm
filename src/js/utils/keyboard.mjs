@@ -12,6 +12,7 @@ export default class Keyboard {
     this.mouse = this.singleton.mouse;
     this.pointer = this.mouse.pointer;
     this.raycaster = new THREE.Raycaster();
+    this.information = this.singleton.information;
 
     document.body.addEventListener(
       "keyup",
@@ -23,6 +24,7 @@ export default class Keyboard {
   }
 
   getTilePosition(key) {
+    if (key === "R") {this.singleton.grid.reset(true); return;}
     if (key !== "X" || this.canPress[key]) {
       return;
     }
@@ -39,7 +41,9 @@ export default class Keyboard {
       y: Math.round(y),
     });
     grid.selectTile(tile);
-
+    this.information.updateData({
+      lastClicked: `(${Math.round(x)}, ${Math.round(y)})`
+    })
     this.canPress[key] = true;
   }
 
