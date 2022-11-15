@@ -16,16 +16,16 @@ export default class Keyboard {
 
     document.body.addEventListener(
       "keyup",
-      (e) => delete this.canPress[e.key.toUpperCase()]
+      (e) => delete this.canPress[e.code]
     );
-    document.body.addEventListener("keypress", (e) =>
-      this.getTilePosition(e.key.toUpperCase())
+    document.body.addEventListener("keydown", (e) =>
+      this.getTilePosition(e.code)
     );
   }
 
   getTilePosition(key) {
-    if (key === "R") {this.singleton.grid.reset(true); return;}
-    if (key !== "X" || this.canPress[key]) {
+    if (key === "Backspace") {this.singleton.grid.reset(true); return;}
+    if (key !== "KeyX" || this.canPress[key]) {
       return;
     }
     this.raycaster.setFromCamera(this.pointer, this.camera.perspectiveCamera);
