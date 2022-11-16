@@ -1,3 +1,8 @@
+/*
+    efolioA - Algoritmo do Ponto Médio  
+    Miguel Gonçalves 1901337 - 18/11/2022
+*/
+
 import { lineMP } from "/lineMP.mjs";
 import Initialize from "./modules/init.mjs";
 

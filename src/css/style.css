@@ -12,3 +12,10 @@ body { margin: 0 }
     padding: 12px;
     font-family: sans-serif;
 }
+
+.dados {
+    border: 1px solid black;
+    padding: 0 8px 24px 8px;
+    margin-bottom: 12px;
+    background-color: rgba(99, 99, 99, 1);
+}

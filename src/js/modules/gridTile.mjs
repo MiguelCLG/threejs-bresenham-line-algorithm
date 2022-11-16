@@ -1,3 +1,8 @@
+/*
+    efolioA - Algoritmo do Ponto Médio  
+    Miguel Gonçalves 1901337 - 18/11/2022
+*/
+
 import * as THREE from "https://unpkg.com/three@0.124.0/build/three.module.js";
 
 export default class GridTile {
