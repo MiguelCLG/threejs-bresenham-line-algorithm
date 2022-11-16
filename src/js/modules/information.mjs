@@ -6,6 +6,7 @@ export default class Information {
         this.informationData = {
             lastClicked: 'N/A',
             lastCalculation: 'N/A',
+            selectedTiles: 'N/A',
         }
         this.assignInfoBox();
     }
@@ -15,17 +16,21 @@ export default class Information {
         this.lastClickedText.nodeValue = `Last Clicked: ${this.informationData.lastClicked}`;
         this.lastCalculationText = document.querySelector('.last-calculation-text')
         this.lastCalculationText.innerText = `Last Calculation: ${this.informationData.lastCalculation}`;
+        this.selectedTiles = document.querySelector('.selected-tiles')
+        this.selectedTiles.innerText = `Selected Tiles: ${this.informationData.lastCalculation}`;
     }
 
     updateData(infoData) {
         this.informationData = {
             lastClicked: infoData.lastClicked || this.informationData.lastClicked,
             lastCalculation: infoData.lastCalculation || this.informationData.lastCalculation,
+            selectedTiles: infoData.selectedTiles || this.informationData.selectedTiles,
         };
     }
     
     updateInformation() {
         this.lastClickedText.innerText = `Last Clicked: ${this.informationData.lastClicked}`;
+        this.selectedTiles.innerText = `Selected Tiles: ${this.informationData.selectedTiles}`;
         this.lastCalculationText.innerText = `Last Calculation: ${this.informationData.lastCalculation}`;
     }
     resize() { }

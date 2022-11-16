@@ -1,87 +1,8 @@
 import * as THREE from "https://unpkg.com/three@0.124.0/build/three.module.js";
 import Singleton from "./singleton.mjs";
 import { lineMP } from "../../../lineMP.mjs";
-
-class GridTile {
-  constructor(size, position, color) {
-    this.size = size;
-    this.position = position;
-    this.color = color;
-    this.tile = this.createTile(
-      this.position.x,
-      this.position.y,
-      this.position.z,
-      this.size,
-      this.color
-    );
-  }
-
-  createTile(x, y, z, tileSize, cor, zSize = 0) {
-    let tileGeometry = new THREE.BoxGeometry(tileSize, tileSize, zSize);
-    let tileMaterial = new THREE.MeshBasicMaterial({
-      color: cor,
-      side: THREE.DoubleSide,
-    });
-
-    let tile = new THREE.Mesh(tileGeometry, tileMaterial);
-    tile.position.x = x;
-    tile.position.y = y;
-    tile.position.z = z;
-    return tile;
-  }
-
-  setTileColor(color) {
-    this.color = color;
-    this.tile = this.createTile(
-      this.position.x,
-      this.position.y,
-      this.position.z,
-      this.size,
-      this.color
-    );
-  }
-}
-
-class RasterTile {
-  constructor(size, position, color) {
-    this.size = size;
-    this.position = position;
-    this.color = color;
-    this.tile = this.createTile(
-      this.position.x,
-      this.position.y,
-      this.position.z,
-      this.size,
-      this.color
-    );
-  }
-
-  createTile(x, y, z, tileSize, cor) {
-    let tileGeometry = new THREE.BoxGeometry(tileSize, tileSize, tileSize / 4);
-    let tileMaterial = new THREE.MeshBasicMaterial({
-      color: cor,
-    });
-    tileMaterial.opacity = 0.7;
-    tileMaterial.transparent = true;
-
-    let tile = new THREE.Mesh(tileGeometry, tileMaterial);
-    tile.position.x = x;
-    tile.position.y = y;
-    tile.position.z = z;
-    return tile;
-  }
-
-  setTileColor(color) {
-    this.color = color;
-    this.tile = this.createTile(
-      this.position.x,
-      this.position.y,
-      this.position.z,
-      this.size,
-      this.color
-    );
-  }
-}
+import GridTile from "./gridTile.mjs";
+import RasterTile from "./rasterTile.mjs";
 
 export default class Grid {
   tileColor1 = 0xef9a70; //jshint ignore:line
@@ -98,10 +19,8 @@ export default class Grid {
     this.reset();
 
     const botaoAlterar = document.getElementById('change-grid-btn');  
-    botaoAlterar.addEventListener('click', () => {
-      console.log(document.getElementById('size-input').value);
+    botaoAlterar.addEventListener('click', () =>
       this.changeGridSize(document.getElementById('size-input').value)
-    }
     );
   }
 
@@ -136,6 +55,11 @@ export default class Grid {
   selectTile(tileObject, color = 0xff0000) {
     if (this.selectedTiles.length >= 2) {
       this.reset();
+      this.information.updateData({
+        lastCalculation: 'N/A',
+        selectedTiles: 'N/A',
+        lastClicked: 'N/A'
+      })
       return;
     }
 
@@ -145,11 +69,13 @@ export default class Grid {
     this.selectedTiles.push(tileObject);
 
     if (this.selectedTiles.length === 2) {
+      // corre o algoritmo do ponto medio
       const linePointVector = lineMP(
         this.selectedTiles[0].position,
         this.selectedTiles[1].position
       );
 
+      // desenha a linha direta de um ponto ao outro
       this.drawLine(
         new THREE.Vector3(
           this.selectedTiles[0].position.x,
@@ -162,16 +88,23 @@ export default class Grid {
           0.1
         )
       );
+
+      // constroi os tiles de acordo com o algoritmo
       this.drawRaster(linePointVector);
 
+      // atualiza o painel de informação
       let displayInfo = '';
       linePointVector.forEach(({ x, y }, index) =>
         displayInfo += `\n${index+1}: (${x}, ${y})` 
-      );
-    
+      );    
+      let displaySelectedTiles = '';
+      this.selectedTiles.forEach(({ position }, index) =>
+          displaySelectedTiles += `\n${index + 1 === 1 ? 'PointA: ' : 'PointB: '}(${position.x}, ${position.y})` 
+        );
       this.information.updateData({
-            lastCalculation: displayInfo,
-        })
+        lastCalculation: displayInfo,
+        selectedTiles: displaySelectedTiles
+      });
     }
   }
 
@@ -194,28 +127,31 @@ export default class Grid {
     this.scene.add(this.line);
   }
 
-  clean(rasterized) {
+  clean(clearRasterized) {
     if(this.tiles)
       this.tiles.forEach((tile) => this.scene.remove(tile.tile));
     this.tiles = [];
-    if(rasterized){
+    if(clearRasterized){
       this.rasterizedTiles.forEach((tile) => { this.scene.remove(tile) });
       this.rasterizedTiles = [];
     }
     this.selectedTiles = [];
     this.scene.remove(this.line);
   }
-  reset(rasterized = false) {
-    this.clean(rasterized);
+  
+  reset(clearRasterized = false) {
+    this.clean(clearRasterized);
     this.tiles = this.createGrid(this.size, this.tileColor1, this.tileColor2);
     this.tiles.forEach(({ tile }) => {
       this.scene.add(tile);
     });
   }
+
   changeGridSize(size) {
     this.size = size;
     this.reset(true);
   }
+
   resize() {}
   update() {}
 }
