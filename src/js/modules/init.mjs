@@ -5,6 +5,9 @@
 
 import Singleton from "./singleton.mjs";
 
+/**
+ * Initializa o primeiro componente da aplicação
+ */
 function Initialize() {
   const canvas = document.querySelector(".main-canvas");
   const mainApp = new Singleton(canvas);

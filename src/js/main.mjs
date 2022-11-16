@@ -13,7 +13,4 @@ function TestLineAlgorithm() {
   console.log(R);
 }
 
-// CreateHeader();
 Initialize();
-
-//TODO: REMOVE JSHINT IGNORES

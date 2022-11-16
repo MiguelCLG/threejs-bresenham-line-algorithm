@@ -5,6 +5,12 @@
 
 import Singleton from "./singleton.mjs";
 
+/**
+ * 
+ * @export
+ * @class Information
+ * Atualiza a informação que damos display no painel
+ */
 export default class Information {
     constructor() {
         this.singleton = new Singleton();

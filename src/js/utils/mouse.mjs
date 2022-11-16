@@ -7,7 +7,12 @@ import * as THREE from "https://unpkg.com/three@0.124.0/build/three.module.js";
 import { EventEmitter } from "https://unpkg.com/@dekkai/event-emitter";
 import Singleton from "../modules/singleton.mjs";
 
-/*global window, document */
+/**
+ * @export
+ * @class Mouse
+ * @extends {EventEmitter}
+ * Gere a posição do rato num vector para ser acedido sempre que necessário  
+*/
 export default class Mouse extends EventEmitter {
   constructor() {
     super();
@@ -19,11 +24,8 @@ export default class Mouse extends EventEmitter {
   }
 
   onPointerMove(evento) {
-    // calculate pointer position in normalized device coordinates
-    // (-1 to +1) for both components
+    // calcula a posição do pointer em coordenadas normalizadas
     this.pointer.setX((evento.clientX / window.innerWidth) * 2 - 1);
     this.pointer.setY(-(evento.clientY / window.innerHeight) * 2 + 1);
   }
-
-  update() {}
 }

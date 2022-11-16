@@ -38,10 +38,11 @@ export default class Singleton {
     this.mouse = new Mouse();
     this.keyboard = new Keyboard();
 
+    // adiciona os eixos
     this.axesHelper = new THREE.AxesHelper( 5 );
-    
     this.scene.add(this.axesHelper);
     
+    // adiciona os listeners para os eventos emitidos
     this.tamanhos.on("resize", () => this.resize());
     this.tempo.on("update", () => this.update());
   }
@@ -63,8 +64,6 @@ export default class Singleton {
   update() {
     this.camera.update();
     this.renderer.update();
-    this.grid.update();
-    this.mouse.update();
     this.information.update();
   }
 }

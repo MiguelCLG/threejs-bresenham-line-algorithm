@@ -9,8 +9,14 @@ import { lineMP } from "../../../lineMP.mjs";
 import GridTile from "./gridTile.mjs";
 import RasterTile from "./rasterTile.mjs";
 
+/**
+ *
+ * @export
+ * @class Grid
+ * Gere a grelha em que vamos usar o algoritmo do ponto medio
+ */
 export default class Grid {
-  tileColor1 = 0xef9a70; //jshint ignore:line
+  tileColor1 = 0xef9a70;
   tileColor2 = 0x9a92bf;
   rasterTileColor = 0xffff00;
 
@@ -19,16 +25,20 @@ export default class Grid {
     this.size = size;
     this.scene = this.singleton.scene;
     this.information = this.singleton.information;
-    this.selectedTiles = [];
-    this.rasterizedTiles = [];
-    this.reset();
 
-    const botaoAlterar = document.getElementById('change-grid-btn');  
-    botaoAlterar.addEventListener('click', () =>
+    this.selectedTiles = []; // tiles que sao selecionados
+    this.rasterizedTiles = []; // tiles que são rasterizados
+
+    this.reset(); // dá reset à grid, neste caso cria uma nova
+
+    // adiciono um event listener para o click do botao Reset para alterar o tamanho da grid
+    const botaoReset = document.getElementById('change-grid-btn');  
+    botaoReset.addEventListener('click', () =>
       this.changeGridSize(document.getElementById('size-input').value)
     );
   }
 
+  // Cria a estrutura da grelha
   createGrid(size, cor1, cor2) {
     const tiles = [];
     for (let x = -size; x <= size; x++) {
@@ -42,6 +52,7 @@ export default class Grid {
     return tiles;
   }
 
+  // cria um tile rasterizado
   createRasterTile(point) {
     return new RasterTile(
       1,
@@ -50,6 +61,7 @@ export default class Grid {
     );
   }
 
+  // busca um tile na grelha por posição e devolve-o
   getTile(position) {
     const selectedTile = this.tiles.filter(
       (tile) => tile.position.x === position.x && tile.position.y === position.y
@@ -57,7 +69,10 @@ export default class Grid {
     return selectedTile;
   }
 
+  // Seleciona o tile clicado
   selectTile(tileObject, color = 0xff0000) {
+
+    // Se já selecionamos 2 tiles, então resetamos
     if (this.selectedTiles.length >= 2) {
       this.reset();
       this.information.updateData({
@@ -68,11 +83,17 @@ export default class Grid {
       return;
     }
 
+    /* 
+      havia 2 maneiras de fazer isto, ou mudavamos a cor do tile, 
+      ou removiamos e criavamos outro no seu lugar possívelmente seria melhor 
+      mudar a cor apenas, mas como não estamos com problemas de performance deixei assim 
+    */
     this.scene.remove(tileObject.tile);
     tileObject.setTileColor(color);
     this.scene.add(tileObject.tile);
     this.selectedTiles.push(tileObject);
 
+    // se selecionamos 2, então corremos o algoritmo e criamos os tiles rasterizados
     if (this.selectedTiles.length === 2) {
       // corre o algoritmo do ponto medio
       const linePointVector = lineMP(
@@ -113,6 +134,7 @@ export default class Grid {
     }
   }
 
+  // cria e desenha os tiles rasterizados de acordo com os pontos devolvidos pelo algoritmo
   drawRaster(linePointVector) {
     linePointVector.forEach((point) => {
       const pixelToRender = this.createRasterTile(point);
@@ -121,17 +143,21 @@ export default class Grid {
     });
   }
 
+  // desenha a linha directa entre o ponto A e o ponto B
   drawLine(p, q) {
     const points = [];
     const material = new THREE.LineBasicMaterial({ color: 0x000000 });
 
     points.push(p);
     points.push(q);
+
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
     this.line = new THREE.Line(geometry, material);
+    
     this.scene.add(this.line);
   }
 
+  // limpa a estrutura de dados
   clean(clearRasterized) {
     if(this.tiles)
       this.tiles.forEach((tile) => this.scene.remove(tile.tile));
@@ -144,6 +170,8 @@ export default class Grid {
     this.scene.remove(this.line);
   }
   
+  // dá reset à estrutura de dados e à grelha
+  // se clearRasterized é true, então limpa também os tiles rasterizados
   reset(clearRasterized = false) {
     this.clean(clearRasterized);
     this.tiles = this.createGrid(this.size, this.tileColor1, this.tileColor2);
@@ -152,11 +180,10 @@ export default class Grid {
     });
   }
 
+  // altera o tamanho da grelha
   changeGridSize(size) {
     this.size = size;
     this.reset(true);
   }
 
-  resize() {}
-  update() {}
 }

@@ -5,6 +5,12 @@
 
 import * as THREE from "https://unpkg.com/three@0.124.0/build/three.module.js";
 
+/**
+ * @export
+ * @class RasterTile
+ * Estrutura de dados do tile rasterizado, é gerido pela Grid 
+ * recebe o seu tamanha, posicao e cor
+*/
 export default class RasterTile {
   constructor(size, position, color) {
     this.size = size;

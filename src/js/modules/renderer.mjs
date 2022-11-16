@@ -6,6 +6,12 @@
 import * as THREE from "https://unpkg.com/three@0.124.0/build/three.module.js";
 import Singleton from "./singleton.mjs";
 
+/**
+ *
+ * @export
+ * @class Renderer
+ * Faz setup e update ao renderer do threejs
+ */
 export default class Renderer {
   constructor() {
     this.singleton = new Singleton();
