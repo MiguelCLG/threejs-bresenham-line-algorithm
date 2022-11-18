@@ -18,14 +18,13 @@ export default class Tamanhos extends EventEmitter {
     this.height = window.innerHeight;
     this.aspect = this.width / this.height;
     this.pixelRatio = Math.min(window.devicePixelRatio, 2);
-    this.frustrum = 5;
 
     window.addEventListener("resize", () => {
       this.width = window.innerWidth;
       this.height = window.innerHeight;
       this.aspect = this.width / this.height;
       this.pixelRatio = Math.min(window.devicePixelRatio, 2);
-      this.emit("resize"); //emite o evento resize que é escutado pelo singleton e este chamará as funções resize() dos componentes que precisam
+      this.emit("resize"); // emite o evento resize que é escutado pelo singleton e este chamará as funções resize() dos componentes que precisam
     });
   }
 }

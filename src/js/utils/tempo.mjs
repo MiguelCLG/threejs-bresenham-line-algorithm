@@ -27,13 +27,13 @@ export default class Tempo extends EventEmitter {
     this.deltaTime = currentTime - this.current;
     this.current = currentTime;
     this.elapsedTime = this.current - this.startTime;
-  
-    if(this.elapsedTime > this.deltaTime)
-    {
-      console.log(this.elapsedTime);
-      this.startTime = 0;
-      this.elapsedTime = 0;
+
+    if (this.elapsedTime > this.deltaTime) {
+      // update a cada 16ms
       this.emit("update"); // emissão do update, todos os components que estejam à escuta deste emit vão fazer update (neste caso será o singleton)
+      // reseta o temporizador
+      this.elapsedTime = 0;
+      this.startTime = Date.now();
     }
     window.requestAnimationFrame(() => this.update());
   }

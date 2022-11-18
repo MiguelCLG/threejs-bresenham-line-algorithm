@@ -39,8 +39,12 @@ export default class Keyboard {
 
   getTilePosition(key) {
     // se for backspace dá reset à grid
-    if (key === "Backspace") { this.singleton.grid.reset(true); return; }
-    
+    if (key === "Backspace" || this.canPress[key]) {
+      this.canPress[key] = true;
+      this.singleton.grid.reset(true);
+      return;
+    }
+
     // se nao for X então evitamos de dar cast ao raycaster
     if (key !== "KeyX" || this.canPress[key]) {
       return;
@@ -61,8 +65,8 @@ export default class Keyboard {
 
     // dá update à informação
     this.information.updateData({
-      lastClicked: `(${Math.round(x)}, ${Math.round(y)})`
-    })
+      lastClicked: `(${Math.round(x)}, ${Math.round(y)})`,
+    });
     this.canPress[key] = true;
   }
 }

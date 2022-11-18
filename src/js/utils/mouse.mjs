@@ -11,8 +11,8 @@ import Singleton from "../modules/singleton.mjs";
  * @export
  * @class Mouse
  * @extends {EventEmitter}
- * Gere a posição do rato num vector para ser acedido sempre que necessário  
-*/
+ * Gere a posição do rato num vector para ser acedido sempre que necessário
+ */
 export default class Mouse extends EventEmitter {
   constructor() {
     super();

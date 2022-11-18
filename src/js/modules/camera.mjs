@@ -10,7 +10,7 @@ import { OrbitControls } from "https://unpkg.com/three@0.124.0/examples/jsm/cont
 /**
  * @export
  * @class Camera
- * 
+ *
  * Faz setup da camera perspectiva e dos orbit controls.
  */
 export default class Camera {
@@ -43,5 +43,4 @@ export default class Camera {
     this.perspectiveCamera.aspect = this.tamanhos.aspect;
     this.perspectiveCamera.updateProjectionMatrix();
   }
-  update() {}
 }

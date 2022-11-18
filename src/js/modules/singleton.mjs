@@ -30,8 +30,8 @@ export default class Singleton {
     this.canvas = canvas;
     this.scene = new THREE.Scene();
     this.tempo = new Tempo();
-    this.information = new Information();
     this.tamanhos = new Tamanhos();
+    this.information = new Information();
     this.camera = new Camera();
     this.renderer = new Renderer();
     this.grid = new Grid(10);
@@ -39,9 +39,9 @@ export default class Singleton {
     this.keyboard = new Keyboard();
 
     // adiciona os eixos
-    this.axesHelper = new THREE.AxesHelper( 5 );
+    this.axesHelper = new THREE.AxesHelper(5);
     this.scene.add(this.axesHelper);
-    
+
     // adiciona os listeners para os eventos emitidos
     this.tamanhos.on("resize", () => this.resize());
     this.tempo.on("update", () => this.update());
@@ -53,7 +53,6 @@ export default class Singleton {
   resize() {
     this.camera.resize();
     this.renderer.resize();
-    this.grid.resize();
   }
 
   /**
@@ -62,7 +61,6 @@ export default class Singleton {
    * Quando adicionamos uma class nova, adicionamos a sua função de update aqui.
    */
   update() {
-    this.camera.update();
     this.renderer.update();
     this.information.update();
   }

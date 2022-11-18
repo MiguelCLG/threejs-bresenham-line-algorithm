@@ -9,9 +9,9 @@ import * as THREE from "https://unpkg.com/three@0.124.0/build/three.module.js";
  *
  * @export
  * @class GridTile
- * Estrutura de dados do tile da grid, é gerido pela Grid 
- * Recebe o seu tamanho, posicao e cor 
-*/
+ * Estrutura de dados do tile da grid, é gerido pela Grid
+ * Recebe o seu tamanho, posicao e cor
+ */
 export default class GridTile {
   constructor(size, position, color) {
     this.size = size;

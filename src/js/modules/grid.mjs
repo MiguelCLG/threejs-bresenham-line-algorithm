@@ -32,9 +32,9 @@ export default class Grid {
     this.reset(); // dá reset à grid, neste caso cria uma nova
 
     // adiciono um event listener para o click do botao Reset para alterar o tamanho da grid
-    const botaoReset = document.getElementById('change-grid-btn');  
-    botaoReset.addEventListener('click', () =>
-      this.changeGridSize(document.getElementById('size-input').value)
+    const botaoReset = document.getElementById("change-grid-btn");
+    botaoReset.addEventListener("click", () =>
+      this.changeGridSize(document.getElementById("size-input").value)
     );
   }
 
@@ -71,21 +71,20 @@ export default class Grid {
 
   // Seleciona o tile clicado
   selectTile(tileObject, color = 0xff0000) {
-
     // Se já selecionamos 2 tiles, então resetamos
     if (this.selectedTiles.length >= 2) {
       this.reset();
       this.information.updateData({
-        lastCalculation: 'N/A',
-        selectedTiles: 'N/A',
-        lastClicked: 'N/A'
-      })
+        lastCalculation: "N/A",
+        selectedTiles: "N/A",
+        lastClicked: "N/A",
+      });
       return;
     }
 
     /* 
       havia 2 maneiras de fazer isto, ou mudavamos a cor do tile, 
-      ou removiamos e criavamos outro no seu lugar possívelmente seria melhor 
+      ou removiamos e criavamos outro no seu lugar, possívelmente seria melhor 
       mudar a cor apenas, mas como não estamos com problemas de performance deixei assim 
     */
     this.scene.remove(tileObject.tile);
@@ -119,17 +118,20 @@ export default class Grid {
       this.drawRaster(linePointVector);
 
       // atualiza o painel de informação
-      let displayInfo = '';
-      linePointVector.forEach(({ x, y }, index) =>
-        displayInfo += `\n${index+1}: (${x}, ${y})` 
-      );    
-      let displaySelectedTiles = '';
-      this.selectedTiles.forEach(({ position }, index) =>
-          displaySelectedTiles += `\n${index + 1 === 1 ? 'PointA: ' : 'PointB: '}(${position.x}, ${position.y})` 
-        );
+      let displayInfo = "";
+      linePointVector.forEach(
+        ({ x, y }, index) => (displayInfo += `\n${index + 1}: (${x}, ${y})`)
+      );
+      let displaySelectedTiles = "";
+      this.selectedTiles.forEach(
+        ({ position }, index) =>
+          (displaySelectedTiles += `\n${
+            index + 1 === 1 ? "PointA: " : "PointB: "
+          }(${position.x}, ${position.y})`)
+      );
       this.information.updateData({
         lastCalculation: displayInfo,
-        selectedTiles: displaySelectedTiles
+        selectedTiles: displaySelectedTiles,
       });
     }
   }
@@ -153,23 +155,24 @@ export default class Grid {
 
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
     this.line = new THREE.Line(geometry, material);
-    
+
     this.scene.add(this.line);
   }
 
   // limpa a estrutura de dados
   clean(clearRasterized) {
-    if(this.tiles)
-      this.tiles.forEach((tile) => this.scene.remove(tile.tile));
+    if (this.tiles) this.tiles.forEach((tile) => this.scene.remove(tile.tile));
     this.tiles = [];
-    if(clearRasterized){
-      this.rasterizedTiles.forEach((tile) => { this.scene.remove(tile) });
+    if (clearRasterized) {
+      this.rasterizedTiles.forEach((tile) => {
+        this.scene.remove(tile);
+      });
       this.rasterizedTiles = [];
     }
     this.selectedTiles = [];
     this.scene.remove(this.line);
   }
-  
+
   // dá reset à estrutura de dados e à grelha
   // se clearRasterized é true, então limpa também os tiles rasterizados
   reset(clearRasterized = false) {
@@ -185,5 +188,4 @@ export default class Grid {
     this.size = size;
     this.reset(true);
   }
-
 }
