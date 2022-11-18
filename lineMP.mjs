@@ -88,7 +88,7 @@ function calculoLinhaXMaior(pointA, pointB) {
       dy = -dy;
   }
 
-  let point = 2 * dy - dx;
+  let point = 2 * dy - dx; // ponto inicial
 
   /** 
   * Percorremos o eixo do X incrementando 1 a cada iteração
@@ -135,7 +135,7 @@ function calculoLinhaYMaior(pointA, pointB) {
       dx = -dx;
   }
     
-  let point = 2 * dx - dy;
+  let point = 2 * dx - dy; // ponto inicial
 
   /** 
   * Percorremos o eixo do Y incrementando 1 a cada iteração

@@ -27,8 +27,14 @@ export default class Tempo extends EventEmitter {
     this.deltaTime = currentTime - this.current;
     this.current = currentTime;
     this.elapsedTime = this.current - this.startTime;
-
-    this.emit("update"); // emissão do update, todos os components que estejam à escuta deste emit vão fazer update (neste caso será o singleton)
+  
+    if(this.elapsedTime > this.deltaTime)
+    {
+      console.log(this.elapsedTime);
+      this.startTime = 0;
+      this.elapsedTime = 0;
+      this.emit("update"); // emissão do update, todos os components que estejam à escuta deste emit vão fazer update (neste caso será o singleton)
+    }
     window.requestAnimationFrame(() => this.update());
   }
 }
